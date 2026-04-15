@@ -1,0 +1,11 @@
+services:
+  laravel-api:
+    build:
+      context: .
+    container_name: boton-pago-api
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
