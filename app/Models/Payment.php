@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'internal_reference',
         'biopago_payment_id',
@@ -32,10 +35,10 @@ class Payment extends Model
     protected function casts(): array
     {
         return [
-            'amount'            => 'decimal:2',
-            'biopago_response'  => 'array',
+            'amount' => 'decimal:2',
+            'biopago_response' => 'array',
             'biopago_result_code' => 'integer',
-            'currency'          => 'integer',
+            'currency' => 'integer',
         ];
     }
 

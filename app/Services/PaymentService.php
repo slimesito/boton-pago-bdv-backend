@@ -11,18 +11,21 @@ class PaymentService
 
     public function initPayment(array $data): Payment
     {
+        $data['title'] ??= 'Aportes IVSS';
+        $data['description'] ??= 'Liquidación de aportes al Instituto Venezolano de los Seguros Sociales';
+
         $reference = 'IVSS-'.date('Ymd').'-'.strtoupper(substr(uniqid(), -6));
 
         $payload = [
-            'letter'      => $data['payer_letter'],
-            'number'      => $data['payer_number'],
-            'amount'      => $data['amount'],
-            'currency'    => $data['currency'] ?? 1,
-            'reference'   => $reference,
-            'title'       => $data['title'],
+            'letter' => $data['payer_letter'],
+            'number' => $data['payer_number'],
+            'amount' => $data['amount'],
+            'currency' => $data['currency'] ?? 1,
+            'reference' => $reference,
+            'title' => $data['title'],
             'description' => $data['description'],
-            'email'       => $data['email'] ?? null,
-            'cellphone'   => $data['cellphone'],
+            'email' => $data['email'] ?? null,
+            'cellphone' => $data['cellphone'],
             'urlToReturn' => config('biopago.url_to_return'),
         ];
 
@@ -34,21 +37,21 @@ class PaymentService
         $result = $this->biopago->createPayment($payload);
 
         return Payment::create([
-            'internal_reference'  => $reference,
-            'biopago_payment_id'  => $result['paymentId'],
-            'amount'              => $data['amount'],
-            'currency'            => $data['currency'] ?? 1,
-            'title'               => $data['title'],
-            'description'         => $data['description'],
-            'payer_type'          => $data['payer_type'] ?? 'natural',
-            'payer_letter'        => $data['payer_letter'],
-            'payer_number'        => $data['payer_number'],
-            'rif_letter'          => $data['rif_letter'] ?? null,
-            'rif_number'          => $data['rif_number'] ?? null,
-            'email'               => $data['email'] ?? null,
-            'cellphone'           => $data['cellphone'],
-            'status'              => 'pending',
-            'url_payment'         => $result['urlPayment'],
+            'internal_reference' => $reference,
+            'biopago_payment_id' => $result['paymentId'],
+            'amount' => $data['amount'],
+            'currency' => $data['currency'] ?? 1,
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'payer_type' => $data['payer_type'] ?? 'natural',
+            'payer_letter' => $data['payer_letter'],
+            'payer_number' => $data['payer_number'],
+            'rif_letter' => $data['rif_letter'] ?? null,
+            'rif_number' => $data['rif_number'] ?? null,
+            'email' => $data['email'] ?? null,
+            'cellphone' => $data['cellphone'],
+            'status' => 'pending',
+            'url_payment' => $result['urlPayment'],
         ]);
     }
 
@@ -62,17 +65,17 @@ class PaymentService
         $status = $isApproved ? 'approved' : $this->mapResultToStatus($result['result'] ?? 0);
 
         $payment->update([
-            'status'                  => $status,
-            'biopago_result_code'     => $result['result'] ?? null,
-            'biopago_transaction_id'  => $result['transactionId'] ?? null,
-            'authorization_code'      => $result['authorizationCode'] ?? null,
-            'biopago_response'        => $result,
+            'status' => $status,
+            'biopago_result_code' => $result['result'] ?? null,
+            'biopago_transaction_id' => $result['transactionId'] ?? null,
+            'authorization_code' => $result['authorizationCode'] ?? null,
+            'biopago_response' => $result,
         ]);
 
         Log::info('PaymentService: payment verified', [
             'internal_reference' => $payment->internal_reference,
-            'status'             => $status,
-            'result'             => $result['result'] ?? null,
+            'status' => $status,
+            'result' => $result['result'] ?? null,
         ]);
 
         return $payment->fresh();
@@ -81,7 +84,7 @@ class PaymentService
     /**
      * Validates the 3 approval criteria for interface-based payments.
      *
-     * @param array<string, mixed> $result
+     * @param  array<string, mixed>  $result
      */
     private function isPaymentApproved(array $result): bool
     {
@@ -109,8 +112,8 @@ class PaymentService
     public function mapResultToStatus(int $result): string
     {
         return match ($result) {
-            1       => 'approved',
-            7       => 'cancelled',
+            1 => 'approved',
+            7 => 'cancelled',
             2, 3, 6, 8 => 'rejected',
             default => 'rejected',
         };
