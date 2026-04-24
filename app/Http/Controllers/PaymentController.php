@@ -41,7 +41,7 @@ class PaymentController extends Controller
                 'url_payment' => $payment->url_payment,
                 'reference' => $payment->internal_reference,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('PaymentController@init failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
 
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
@@ -64,7 +64,7 @@ class PaymentController extends Controller
             );
 
             return response()->json(['success' => true, 'message' => 'Token enviado exitosamente.']);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('PaymentController@sendToken failed', ['error' => $e->getMessage()]);
 
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
@@ -105,7 +105,7 @@ class PaymentController extends Controller
                 'approved' => $isApproved,
                 'result' => $result,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('PaymentController@process failed', ['error' => $e->getMessage()]);
 
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
@@ -141,7 +141,7 @@ class PaymentController extends Controller
             }, $rawGroups);
 
             return response()->json(['success' => true, 'groups' => $groups]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('PaymentController@groups failed', ['error' => $e->getMessage()]);
 
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
@@ -161,7 +161,7 @@ class PaymentController extends Controller
             $payment = $this->paymentService->verifyAndUpdate($biopagoPaymentId);
 
             return redirect($frontendUrl.'/payment/result?status='.$payment->status.'&ref='.$payment->internal_reference);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('PaymentController@return failed', ['error' => $e->getMessage(), 'paymentId' => $biopagoPaymentId]);
 
             return redirect($frontendUrl.'/payment/result?status=error');

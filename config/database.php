@@ -127,8 +127,8 @@ return [
             'prefix_schema' => env('DB_SCHEMA_PREFIX', ''),
             'server_version' => env('DB_SERVER_VERSION', '11g'),
             'sessionVars' => [
-                'NLS_DATE_FORMAT' => 'DD-MON-YYYY HH24:MI:SS',
-                'NLS_TIMESTAMP_FORMAT' => 'DD-MON-YYYY HH24:MI:SSXFF',
+                'NLS_DATE_FORMAT' => 'YYYY-MM-DD HH24:MI:SS',
+                'NLS_TIMESTAMP_FORMAT' => 'YYYY-MM-DD HH24:MI:SSXFF',
                 'NLS_NUMERIC_CHARACTERS' => '.,',
             ],
         ],
@@ -146,8 +146,8 @@ return [
             'prefix_schema' => env('DB_SCHEMA_PREFIX_SEGUNDA', ''),
             'server_version' => env('DB_SERVER_VERSION', '11g'),
             'sessionVars' => [
-                'NLS_DATE_FORMAT' => 'DD-MON-YYYY HH24:MI:SS',
-                'NLS_TIMESTAMP_FORMAT' => 'DD-MON-YYYY HH24:MI:SSXFF',
+                'NLS_DATE_FORMAT' => 'YYYY-MM-DD HH24:MI:SS',
+                'NLS_TIMESTAMP_FORMAT' => 'YYYY-MM-DD HH24:MI:SSXFF',
                 'NLS_NUMERIC_CHARACTERS' => '.,',
             ],
         ],
